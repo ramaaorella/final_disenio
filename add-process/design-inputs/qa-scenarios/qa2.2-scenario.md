@@ -1,6 +1,6 @@
 ## Escenario de calidad QA-2.2: Soporte para distribuir servicios en ambientes diferentes
 
-*Es deseable que el sistema permita desplegar fácilmente sus servicios en un ambiente cloud.*
+_Es deseable que el sistema permita desplegar fácilmente sus servicios en un ambiente cloud._
 
 <table>
   <tr>
@@ -9,7 +9,7 @@
   </tr>
   <tr>
     <td><b>Stimulus source</b></td>
-    <td>Desarrollador</td>
+    <td>Desarrolladores</td>
   </tr>
   <tr>
     <td><b>Environment</b></td>
@@ -23,10 +23,12 @@
     <td><b>Response</b></td>
     <td>
     <ul>
-        <li>Migrar a ambiente cloud una versión del servicio afectado</li>
-        <li>Migrar tráfico de usuarios/datos de forma gradual</li>
-        <li>Quitar el servicio local original una vez que el se haya realizado el deploy completo.</li>
-      </ul>
+      <li>Adaptar y migrar a la versión del servicio afectado para el nuevo entorno</li>
+      <li>Los servicios del sistema se pueden instalar y ejecutar correctamente en el ambiente deseado</li>
+      <li>La comunicación entre los servicios y otros componentes del sistema se mantiene sin problemas en el nuevo entorno</li>
+      <li>Realizar una migración gradual del tráfico de usuarios/datos al nuevo entorno</li>
+      <li>Eliminar el servicio original de manera controlada una vez completado el despliegue en el nuevo entorno</li>
+    </ul>
     </td>
   </tr>
   <tr>
