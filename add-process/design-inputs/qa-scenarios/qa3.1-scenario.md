@@ -1,6 +1,6 @@
 ## Escenario de calidad QA-3.1: Soporte para usuarios del sistema
 
-*El sistema debe brindar soporte a los distintos tipos de usuarios de la plataforma, ya sea para enviar/recibir mensajes como para gestionar eficientemente las comunicaciones y el portal de clientes.*
+_El sistema debe brindar soporte a los distintos tipos de usuarios de la plataforma, ya sea para enviar/recibir mensajes como para gestionar eficientemente las comunicaciones y el portal de clientes._
 
 <table>
   <tr>
@@ -23,9 +23,10 @@
     <td><b>Response</b></td>
     <td>
     <ul>
-        <li>La interfaz del sistema será familiar a las de los canales de comunicación digital que el sistema integra</li>
-        <li>Soporte para una navegación eficiente dentro de una pantalla</li>
-      </ul>
+      <li>La interfaz del sistema presenta un diseño intuitivo y familiar para los usuarios, reflejando la apariencia de los canales de comunicación digital integrados</li>
+      <li>Las funciones clave, como el envío y recepción de mensajes, son fácilmente accesibles desde la interfaz, contribuyendo a una experiencia de usuario fluida</li>
+      <li>La interfaz del sistema presenta las funcionalidades clave directamente accesibles en una misma pantalla, minimizando la necesidad de redireccionamientos y reduciendo la cantidad de clics necesarios para completar tareas comunes</li>
+    </ul>
     </td>
   </tr>
   <tr>

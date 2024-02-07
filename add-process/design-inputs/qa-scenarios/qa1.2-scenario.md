@@ -1,15 +1,15 @@
 ## Escenario de calidad QA-1.2: Multicanalidad flujo saliente
 
-*La plataforma debe tener la capacidad de enviar de manera uniforme mensajes a los distintos canales partícipes de la comunicación (entre aquellos disponibles).*
+_La plataforma debe tener la capacidad de enviar de manera uniforme mensajes a los distintos canales partícipes de la comunicación (entre aquellos disponibles)._
 
 <table>
   <tr>
     <td><b>Stimulus</b></td>
-    <td>Se envía un nuevo mensaje</td>
+    <td>Un operador genera un mensaje de respuesta que debe ser transmitido al usuario a través del canal correspondiente</td>
   </tr>
   <tr>
     <td><b>Stimulus source</b></td>
-    <td>Usuario</td>
+    <td>Usuario (operador)</td>
   </tr>
   <tr>
     <td><b>Environment</b></td>
@@ -23,17 +23,21 @@
     <td><b>Response</b></td>
     <td>
     <ul>
-      <li>El sistema persiste el mensaje saliente</li>
-      <li>El sistema envía el mensaje y notifica al emisor del mismo</li>
+      <li>El sistema recibe el mensaje de respuesta generado por el operador</li>
       <li>Se registra el mensaje saliente (logging)</li>
-      </ul>
+      <li>El sistema formatea el mensaje saliente de manera adecuada para el canal de destino</li>
+      <li>El sistema enruta y transmite el mensaje al canal de destino para que sea entregado al usuario correspondiente</li>
+      <li>El mensaje es marcado para persistencia asincrónica en la base de datos del sistema</li>
+    </ul>
     </td>
   </tr>
   <tr>
     <td><b>Response measure</b></td>
     <td>
     <ul>
-      <li>Porcentaje de mensajes salientes correctamente procesados
+      <li>Porcentaje de mensajes salientes registrados</li>
+      <li>Porcentaje de mensajes salientes correctamente procesados</li>
+      <li>Porcentaje de mensajes salientes con confirmación de entrega</li>
     </ul>
     </td>
   </tr>

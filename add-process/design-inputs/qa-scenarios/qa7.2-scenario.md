@@ -1,6 +1,6 @@
 ## Escenario de calidad QA-7.1: Confidencialidad de los canales de comunicación
 
-*El sistema debe garantizar que no se comparte información entre distintos clientes.*
+_El sistema debe garantizar que no se comparte información entre distintos clientes._
 
 <table>
   <tr>
@@ -25,7 +25,8 @@
       <ul>
         <li>Bloquear el acceso a los servicios cuando se trate de canales de comunicación que no le correspondan, permitiendo sólo el uso legítimo de los mismos</li>
         <li>Registrar intento de acceso (logging) con la identidad del usuario a canales ajenos</li>
-        <li>Informar a los administradores del sistema del intento de un posible ataque</li>
+        <li>Se implementa un mecanismo para reconocer patrones de alta demanda inexplicable a la información protegida</li>
+        <li>Si se detecta una actividad sospechosa, se informa a los administradores del sistema</li>
       </ul>
     </td>
   </tr>
@@ -33,7 +34,8 @@
     <td><b>Response measure</b></td>
     <td>
       <ul>
-        <li>Probabilidad de detectar un ataque</li>
+        <li>Registro de los intentos de acceso no autorizado para auditoría</li>
+        <li>Probabilidad de detectar un ataque respecto al porcentaje de actividades sospechosas detectadas</li>
       </ul>
     </td>
   </tr>
