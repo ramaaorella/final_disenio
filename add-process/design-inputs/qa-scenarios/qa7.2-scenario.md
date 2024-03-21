@@ -1,4 +1,4 @@
-## Escenario de calidad QA-7.1: Confidencialidad de los canales de comunicación
+## Escenario de calidad QA-7.2: Confidencialidad de los canales de comunicación
 
 _El sistema debe garantizar que no se comparte información entre distintos clientes._
 
