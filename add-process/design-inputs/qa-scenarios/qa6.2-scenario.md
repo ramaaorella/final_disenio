@@ -1,4 +1,4 @@
-## Escenario de calidad QA-6.1: Preservación de los mensajes
+## Escenario de calidad QA-6.2: Preservación de los mensajes
 
 _El sistema debe preservar todos los mensajes, y en particular no debe perder ninguno de los mensajes entrantes. La trazabilidad del procesamiento de mensajes también es importante._
 
