@@ -13,7 +13,7 @@
 </p>
 
 <p align="justify">
-  Cabe aclarar que igualmente el método ADD indica que en caso de querer realizar un diseño para sistemas existentes, antes de realizar las iteraciones de diseño (que comenzarían con una primera iteración desde el paso 3), resulta necesario asegurarse que se tiene una comprensión clara de la arquitectura existente del sistema; lo cual concuerda con el objetivo del presente documento.
+  Cabe aclarar que igualmente el método ADD indica que en caso de querer realizar un diseño para sistemas existentes, antes de realizar las iteraciones de diseño, resulta necesario asegurarse que se tiene una comprensión clara de la arquitectura existente del sistema; lo cual concuerda con el objetivo del presente documento.
 </p>
 
 ### Arquitectura existente
