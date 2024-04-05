@@ -139,21 +139,21 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
     </table>
 </dd></dl>
 
-<h4>- <a href="">Flujo mensajes entrantes</a></h4>
+<h4>- <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/diagrams/flujo-mensajes-entrantes-iteration-1.iuml">Flujo mensajes entrantes</a></h4>
 <dl><dd>
 
 ![flujo-mensajes-entrantes](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ramaaorella/final_disenio/main/add-process/design-outputs/diagrams/flujo-mensajes-entrantes-iteration-1.iuml)
 
 </dd></dl>
 
-<h4>- <a href="">Flujo mensajes salientes</a></h4>
+<h4>- <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/diagrams/flujo-mensajes-salientes-iteration-1.iuml">Flujo mensajes salientes</a></h4>
 <dl><dd>
 
 ![flujo-mensajes-salientes](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ramaaorella/final_disenio/main/add-process/design-outputs/diagrams/flujo-mensajes-salientes-iteration-1.iuml)
 
 </dd></dl>
 
-<h4>- <a href="">Diagrama deployment</a></h4>
+<h4>- <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/diagrams/deployment-iteration-1.iuml">Diagrama deployment</a></h4>
 <dl><dd>
 
 ![diagrama-deployment](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ramaaorella/final_disenio/main/add-process/design-outputs/diagrams/deployment-iteration-1.iuml)
