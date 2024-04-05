@@ -1,0 +1,83 @@
+@startuml test
+
+title Flujo de mensajes entrantes
+
+skinparam BoxPadding 10
+
+actor ExternalSystem
+
+box "Gateway de Mensajería" #ECECEC
+  participant IncomingMessageReceiver
+  queue incomingQueue as GatewayIncomingQueue
+  participant IncomingMessageSender
+end box
+
+box "Core" #ECECEC
+  participant SpecialIntegrationService
+  queue priorityQueue
+  queue defaultQueue
+  participant MessageService
+  participant WebsocketManager
+  participant PersistanceService
+  participant MessageRepository
+  database Database
+  participant NotificationService
+end box
+
+participant Frontend
+
+ExternalSystem -> IncomingMessageReceiver : \lEnvía mensaje entrante  \t\t\t\nal webhook  
+
+group ref [RabbitMQ Inter-communication]
+  IncomingMessageReceiver ->> GatewayIncomingQueue : convertAndSend(\n'incomingQueue',\nmessage)
+  note over IncomingMessageSender: Already subscribed \nto queue
+  GatewayIncomingQueue ->> IncomingMessageSender : receive(message)
+end
+
+IncomingMessageSender ->> SpecialIntegrationService : send(message)
+activate SpecialIntegrationService
+SpecialIntegrationService -> WebsocketManager : get_online_users()
+SpecialIntegrationService <<-- WebsocketManager : online_users
+SpecialIntegrationService -> SpecialIntegrationService : extract_user(message)
+
+group ref [RabbitMQ Inter-communication with priorization]
+  note over MessageService: Already subscribed \nto both queues
+  alt User is online
+    SpecialIntegrationService -> SpecialIntegrationService : append_websocket_info(message)
+    SpecialIntegrationService ->> priorityQueue : convertAndSend(\n'priorityQueue',\nmessage)
+    priorityQueue ->> MessageService : receive(message)
+    activate MessageService
+  else User is offline
+    SpecialIntegrationService ->> defaultQueue : convertAndSend(\n'defaultQueue',\nmessage)
+    deactivate SpecialIntegrationService
+    defaultQueue ->> MessageService : receive(message)
+  end
+end
+
+MessageService -> MessageService : process(message)
+MessageService ->> PersistanceService : //[RabbitMQ Intercomunication]//\nsend(processed_message)
+PersistanceService ->> MessageRepository : save(processed_message)
+MessageRepository ->> Database : //SQL INSERT INTO ...//
+
+alt User is online
+  MessageService ->> WebsocketManager : //[RabbitMQ Intercomunication]//\nsend(processed_message)
+  alt User is still online and websocket channel still open
+    WebsocketManager ->> Frontend : socket.send(processed_message)
+  else Websocket channel is unreachable (User disconnected)
+    WebsocketManager ->> NotificationService : //[RabbitMQ Intercomunication]//\nsend(processed_message)
+  end
+else User is offline
+  MessageService ->> NotificationService : //[RabbitMQ Intercomunication]//\nsend(processed_message)
+  deactivate MessageService
+end
+
+legend bottom right
+  Key:
+  —▸: Synchronous message
+  —>: Asynchronous message
+  <-- : Return message
+endlegend
+
+left footer \l*Aclaración: Las flechas cuya etiqueta incluye <i>[RabbitMQ Intercomunication]</i> representan el flujo completo que supone la comunicación asincrónica entre componentes mediante el uso de RabbitMQ.\n   Este flujo se detalla en el frame de referencia (ref), luego se simplifica para evitar redundancias en el diagrama. 
+
+@enduml

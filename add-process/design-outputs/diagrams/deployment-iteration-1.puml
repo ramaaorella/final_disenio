@@ -1,0 +1,67 @@
+@startuml DeploymentDiagram
+
+node "Gateway de mensajería" as GatewayMensajeria {
+  component IncomingMessageReceiver
+  queue incomingQueue
+  component IncomingMessageSender
+  component OutgoingMessageReceiver
+  queue outgoingQueue
+  component OutgoingMessageSender
+}
+node "RabbitMQ Broker\n//Gateway de mensajería//" as RabbitMQBrokerGatewayMsj
+
+node "//<<device>>//\nClient Browser" as ClientBrowser
+
+node "Web Server" as WebServer {
+  component Frontend
+}
+
+node "Core" as Core {
+  component "Gateway" as Gateway
+
+  package "Message Processing Cluster" {
+    component "Special Integration Service" as SpecialIntegrationService
+    component "Websocket Manager" as WebsocketManager
+
+
+    component "Message Service" as MessageService
+  }
+
+  SpecialIntegrationService -[hidden]right- WebsocketManager
+  SpecialIntegrationService -[hidden]down- MessageService
+
+  component "Persistance Service" as PersistanceService
+  component "Notification Service" as NotificationService
+
+  MessageService -[hidden]right- PersistanceService
+  PersistanceService -[hidden]right- NotificationService
+
+  component "Message Repository" as MessageRepository
+  component "Notification Repository" as NotificationRepository
+  component "User Repository" as UserRepository
+
+  MessageRepository -[hidden]right-  NotificationRepository
+  NotificationRepository -[hidden]right- UserRepository 
+
+  Gateway -[hidden]down- SpecialIntegrationService
+  Gateway -[hidden]down- WebsocketManager
+  SpecialIntegrationService -[hidden]down- PersistanceService
+  WebsocketManager -[hidden]down- PersistanceService
+  PersistanceService -[hidden]down- NotificationRepository
+}
+node "RabbitMQ Broker\n//Core//" as RabbitMQBrokerCore
+
+Core ..> RabbitMQBrokerCore
+
+node "Database Server" as DatabaseServer
+
+GatewayMensajeria ..> RabbitMQBrokerGatewayMsj
+GatewayMensajeria -left- Core
+
+ClientBrowser -- WebServer : HTTPS
+WebServer -down- Core : HTTP / Websocket
+Core -down- DatabaseServer : TCP/IP
+
+left footer \l*Aclaración: El package <i>Message Processing Cluster</i> no implica necesariamente un cluster tradicional. Se utiliza para representar la decisión de co-localizar los servicios para mejorar el rendimiento del sistema.
+
+@enduml
