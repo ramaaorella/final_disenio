@@ -69,3 +69,120 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
 
 <p align="right">(<a href="#top">Volver al inicio</a>)</p>
 
+### Design outputs
+
+<ul>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-001.md">ADR 001: Comunicación asincrónica entre componentes y servicios</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-002.md">ADR 002: Desacoplamiento de la persistencia del procesamiento de mensajes</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-003.md">ADR 003: Implementación de notificaciones en tiempo real y diferidas</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-004.md">ADR 004: Priorización de mensajes de usuarios en línea en el procesamiento</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-005.md">ADR 005: Optimización de la latencia de red y reducción de sobrecarga mediante protocolos livianos, reducción de mensajes y co-locación de recursos</a></li>
+</ul>
+
+<h4>- <a href="https://github.com/ramaaorella/final_disenio/blob/main/images/architecture/iteration-1.png">Diagrama C&C</a></h4>
+<dl><dd>
+  <img src="../../images/architecture/iteration-1.png" alt="Architecture - Iteración 1"/>
+  
+  <table>
+      <tr>
+        <th>Element</th>
+        <th>Responsibility</th>
+      </tr>
+      <tr>
+        <td>Incoming Message Receiver</td>
+        <td>Recepción de mensajes entrantes desde los diferentes canales de comunicación. Procesamiento inicial para eliminar información innecesaria. Envío de mensajes procesados para la cola de mensajes entrantes.</td>
+      </tr>
+      <tr>
+        <td>Incoming Message Sender</td>
+        <td>Implementa el enlace de comunicación con el Core. Consume mensajes de la cola de mensajes entrantes y los envía a través de este canal.</td>
+      </tr>
+      <tr>
+        <td>Outgoing Message Receiver</td>
+        <td>Recepción de mensajes salientes desde el Core y envío a la cola de mensajes salientes para su entrega a los destinatarios finales a través de los servicios externos.</td>
+      </tr>
+      <tr>
+        <td>Outgoing Message Sender</td>
+        <td>Implementa el enlace de comunicación con sistemas externos para enviar los mensajes generados por el sistema. Se encarga de transmitir los mensajes a través del canal de comunicación apropiado para cada mensaje.</td>
+      </tr>
+      <tr>
+        <td>Special Integration Service</td>
+        <td>Actúa como el enlace en la comunicación con el Gateway de Mensajería. Se encarga de recibir los mensajes entrantes del Gateway de Mensajería y los mensajes salientes del Core, y enrutarlos debidamente para su procesamiento. Prioriza el procesamiento, entre los mensajes entrantes, transmitiendo con prioridad aquellos donde el usuario implicado se encuentra en línea. </td>
+      </tr>
+      <tr>
+        <td>Websocket Manager</td>
+        <td>Gestiona los canales de comunicación WebSocket del sistema. Se encarga de abrir, cerrar y mantener las conexiones WebSocket con los clientes. Además, recibe y envía mensajes a través de estos canales, facilitando la comunicación en tiempo real entre el servidor y los clientes. Implementa la lógica necesaria para gestionar múltiples conexiones WebSocket de manera eficiente y confiable.</td>
+      </tr>
+      <tr>
+        <td>Message Service</td>
+        <td>Se encarga de manejar la lógica de negocio relacionada con los mensajes en el sistema. Recibe mensajes entrantes y salientes, y los procesa según las reglas y lógica del negocio.</td>
+      </tr>
+      <tr>
+        <td>Persistance Service</td>
+        <td>Se encarga de gestionar la persistencia de datos en el sistema. Recibe los mensajes procesados del Message Service y se encarga de su almacenamiento permanente en la base de datos.</td>
+      </tr>
+      <tr>
+        <td>Notification Service</td>
+        <td>Se encarga de gestionar el envío de notificaciones a los usuarios del sistema mediante canales de notificación alternativos, cuando los mismos no se encuentran conectados.</td>
+      </tr>
+      <tr>
+        <td>Message Repository</td>
+        <td>Se encarga de gestionar el almacenamiento y recuperación de mensajes en el sistema. Proporciona métodos para crear, leer, actualizar y eliminar mensajes en la base de datos.</td>
+      </tr>
+      <tr>
+        <td>Notification Repository</td>
+        <td>Se encarga de gestionar el almacenamiento y recuperación de notificaciones en el sistema. Proporciona métodos para crear, leer, actualizar y eliminar notificaciones en la base de datos.</td>
+      </tr>
+      <tr>
+        <td>User Repository</td>
+        <td>Se encarga de gestionar el almacenamiento y recuperación de información de usuarios en el sistema. Proporciona métodos para crear, leer, actualizar y eliminar datos de usuario en la base de datos. </td>
+      </tr>
+    </table>
+</dd></dl>
+
+<h4>- <a href="">Flujo mensajes entrantes</a></h4>
+<dl><dd>
+
+![flujo-mensajes-entrantes]()
+
+</dd></dl>
+
+<h4>- <a href="">Flujo mensajes salientes</a></h4>
+<dl><dd>
+
+![flujo-mensajes-salientes]()
+
+</dd></dl>
+
+<h4>- <a href="">Diagrama deployment</a></h4>
+<dl><dd>
+
+![diagrama-deployment]()
+
+</dd></dl>
+
+#### Consideraciones
+
+- Al optar por la comunicación asincrónica entre componentes y servicios, es fundamental asegurar que los mensajes lleguen en el orden correcto. La falta de orden puede afectar significativamente la coherencia de las conversaciones y la experiencia del usuario, especialmente a medida que el sistema escala horizontalmente. Este problema se convierte en un nuevo input a abordar en las próximas iteraciones de diseño, donde es necesario explorar estrategias para mitigar este problema y garantizar la coherencia del hilo de las conversaciones.
+
+#### Sugerencias para implementación
+
+- Para la implementación de notificaciones push, existen múltiples proveedores que podrían integrarse con la plataforma, como Firebase Cloud Messaging (FCM), OneSignal, Pusher, entre otros. La elección del proveedor dependerá de varios factores, incluyendo la cantidad de usuarios a manejar en el lanzamiento de la plataforma, los costos asociados que se puedan asumir y las habilidades del equipo de desarrollo. Dado que el proveedor seleccionado no tiene un impacto significativo en el diseño ni en la arquitectura general del sistema, se deja la decisión abierta para cuando se realice la implementación. Se recomienda buscar librerías que ofrezcan integración Maven para facilitar la incorporación con Spring Boot, y que a su vez, sean lo suficientemente escalables y fiables para mantener y no degradar la calidad del sistema.
+- Para la implementación de canales WebSocket, se sugiere utilizar Spring WebSockets, que ofrece una integración sencilla con Spring Boot mediante las dependencias `spring-boot-starter-websocket` y `spring-messaging`.
+- Para la implementación de RabbitMQ, se pueden aprovechar las dependencias proporcionadas por Spring Boot para integrarlo fácilmente (`spring-boot-starter-amqp`). Se recomienda hacer uso de las propias funcionalidades de RabbitMQ para implementar la estrategia de dead-lettering y TTL para evitar los problemas de starvation de mensajes.
+- Para mantener localmente la lista de usuarios en línea en el SpecialIntegrationService y acelerar el enrutamiento de los mensajes considerando si deben priorizarse, se sugiere implementar una caché local utilizando la anotación `@Cacheable` de Spring Framework. Al habilitar el soporte de caché con la anotación `@EnableCaching` en una clase de configuración de Spring, se activará la funcionalidad de caché en la aplicación, utilizando la caché en memoria por defecto. Esto permitirá una recuperación más rápida de la información, reduciendo la latencia en el procesamiento de mensajes. Además, en caso de que el volumen de usuarios en línea crezca significativamente en el futuro, la caché puede ser fácilmente re-configurada para utilizar un proveedor externo.
+
+<p align="right">(<a href="#top">Volver al inicio</a>)</p>
+
+### Analysis of current design and Review iteration
+
+Durante esta iteración, se han tomado una serie de decisiones de diseño que tienen como objetivo abordar los drivers seleccionados para la iteración. A continuación, se detallan estas decisiones y cómo contribuyen a satisfacer dichos drivers, incluyendo aquellos inputs en los que la arquitectura actual puede llegar a contribuir sin ser drivers propios de esta iteración:
+
+- Se satisface de forma parcial la restricción <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-inputs/1.review-design-inputs.md#constraints">CON-1</a> en esta iteración, dado que se han considerado y respetado las tecnologías Java, MySQL, JHipster para Spring y RabbitMQ en el diseño inicial del sistema. Sin embargo, la evaluación completa de si estas tecnologías satisfacen todas las necesidades y requisitos del proyecto requerirá la finalización del diseño y la implementación completa del sistema. Por ello, no se puede afirmar que esta restricción organizacional pueda satisfacerse en su totalidad.
+- Se satisfacen de forma total los casos de uso <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-inputs/1.review-design-inputs.md#primary-functional-requirements">UC-2</a> y <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-inputs/1.review-design-inputs.md#primary-functional-requirements">UC-3</a> en esta iteración, dado que se han instanciado los componentes necesarios y se han distribuido las responsabilidades para dar soporte a ambos flujos. En el caso de UC-2, el ingreso de mensajes de usuarios a través de un canal se gestiona, persiste y muestra al operador según lo requerido. Del mismo modo, en UC-3, el egreso de mensajes de operadores se transmite de manera efectiva al usuario correspondiente, cumpliendo con los objetivos establecidos para ambos casos de uso.
+- Se satisface de forma total el escenario de calidad <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-inputs/qa-scenarios/qa4.1-scenario.md">QA-4.1</a> en esta iteración. La arquitectura y las decisiones de diseño adoptadas están orientadas a garantizar un procesamiento eficiente y rápido de los mensajes, lo que permite una interacción fluida para los usuarios activos del sistema. Se valoraron y analizaron diversas estrategias asociadas para cumplir en general con este tipo de escenario de calidad, asegurando así que se implementen las soluciones más adecuadas para satisfacer las necesidades del sistema en términos de rendimiento y latencia.
+
+<p align="center">
+  <img src="../../images/design-kanban-board/iteration-1.png" alt="Design kanban board - Iteración 1"/>
+</p>
+
+<p align="right">(<a href="#top">Volver al inicio</a>)</p>

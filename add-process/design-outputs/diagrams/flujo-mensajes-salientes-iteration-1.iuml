@@ -1,0 +1,57 @@
+@startuml test
+
+title Flujo de mensajes salientes
+
+skinparam BoxPadding 10
+skinparam FooterFontSize 14
+
+actor User
+participant Frontend
+box "Core" #ECECEC
+  participant WebsocketManager
+  queue priorityQueue
+  participant MessageService
+  participant PersistanceService
+  participant MessageRepository
+  database Database
+  participant SpecialIntegrationService
+end box
+
+box "Gateway de Mensajería" #ECECEC
+  participant OutgoingMessageReceiver
+  participant OutgoingMessageSender
+end box
+
+participant ExternalSystemAPI
+note right of ExternalSystemAPI: ExternalSystemAPI models the \nAPIs of Whatsapp, \nFacebook Messenger \nand other external services
+
+User -> Frontend : Envía nuevo mensaje
+Frontend ->> WebsocketManager : socket.send(message)
+
+group ref [RabbitMQ Inter-communication]
+  WebsocketManager ->> priorityQueue : convertAndSend(\n'priorityQueue',\nmessage)
+  note over MessageService: Already subscribed \nto queue
+  priorityQueue ->> MessageService : receive(message)
+  activate MessageService
+end
+
+MessageService -> MessageService : process(message) /' validateAndProcess(message)? '/
+MessageService ->> PersistanceService : //[RabbitMQ Intercomunication]//\nsend(processed_message)
+PersistanceService ->> MessageRepository : save(processed_message)
+MessageRepository ->> Database : //SQL INSERT INTO ...//
+MessageService ->> SpecialIntegrationService : //[RabbitMQ Intercomunication]//\nsend(processed_message)
+deactivate MessageService
+SpecialIntegrationService ->> OutgoingMessageReceiver : send(processed_message)
+
+OutgoingMessageReceiver ->> OutgoingMessageSender : //[RabbitMQ Intercomunication]//\nsend(processed_message)
+OutgoingMessageSender ->> ExternalSystemAPI : sendMessage(processed_message) /' POST(message)? '/
+
+legend bottom right
+  Key:
+  —▸: Synchronous message
+  —>: Asynchronous message
+endlegend
+
+left footer \l*Aclaración: Las flechas cuya etiqueta incluye <i>[RabbitMQ Intercomunication]</i> representan el flujo completo que supone la comunicación asincrónica entre componentes mediante el uso de RabbitMQ.\n   Este flujo se detalla en el frame de referencia (ref), luego se simplifica para evitar redundancias en el diagrama. 
+
+@enduml
