@@ -156,7 +156,7 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
 <h4>- <a href="">Diagrama deployment</a></h4>
 <dl><dd>
 
-![diagrama-deployment](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ramaaorella/final_disenio/main/add-process/design-outputs/diagrams/deployment-iteration-1.puml)
+![diagrama-deployment](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ramaaorella/final_disenio/main/add-process/design-outputs/diagrams/deployment-iteration-1.iuml)
 
 </dd></dl>
 
