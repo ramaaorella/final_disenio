@@ -40,7 +40,7 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
     </tr>
     <tr>
       <td>Comunicación sincrónica o asincrónica entre servicios</td>
-      <td>Al igual que entre componentes, la comunicación entre servicios puede tratarse de una comunicación sincrónica o asincrónica. A diferencia que en el caso anterior, debe considerarse la dependencia potencial entre servicios al decidir el tipo de comunicación, ya que se puede requerir sincronicidad para garantizar la integridad y coherencia del sistema. Es importante tener en cuenta que cada enfoque tiene sus propias ventajas y desventajas, y por ello, es necesario evaluar el tipo de comunicación en función de las necesidades específicas de cada interacción entre servicios.</td>
+      <td>Al igual que entre componentes, la comunicación entre servicios puede tratarse de una comunicación sincrónica o asincrónica. A diferencia del caso anterior, debe considerarse la dependencia potencial entre servicios al decidir el tipo de comunicación, ya que se puede requerir sincronicidad para garantizar la integridad y coherencia del sistema. Es importante tener en cuenta que cada enfoque tiene sus propias ventajas y desventajas, y por ello, es necesario evaluar el tipo de comunicación en función de las necesidades específicas de cada interacción entre servicios.</td>
     </tr>
     <tr>
       <td>Gestión de la persistencia de mensajes como parte del procesamiento</td>
