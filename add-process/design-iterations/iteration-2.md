@@ -97,4 +97,92 @@ En esta segunda iteración, se llevará a cabo una revisión de los componentes 
   <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-015.md">ADR 015: Separación de operaciones de lectura y escritura en la base de datos (CQRS) en el Servicio de Mensajería</a></li>
 </ul>
 
+<h4>- <a href="https://github.com/ramaaorella/final_disenio/blob/main/images/architecture/iteration-2.png">Diagrama C&C</a></h4>
+<dl><dd>
+  <img src="../../images/architecture/iteration-2.png" alt="Architecture - Iteración 2"/>
+
+  <table>
+      <tr>
+        <th>Element</th>
+        <th>Responsibility</th>
+      </tr>
+      <tr>
+        <td>Incoming Message Receiver</td>
+        <td>Recepción de mensajes entrantes desde los diferentes canales de comunicación. Envío de mensajes procesados para la cola de mensajes entrantes.</td>
+      </tr>
+      <tr>
+        <td>Incoming Message Sender</td>
+        <td>Implementa el enlace de comunicación con el Core. Consume mensajes de la cola de mensajes entrantes y los envía a través de este canal.</td>
+      </tr>
+      <tr>
+        <td>Outgoing Message Receiver</td>
+        <td>Recepción de mensajes salientes desde el Core y envío a la cola de mensajes salientes para su entrega a los destinatarios finales a través de los servicios externos.</td>
+      </tr>
+      <tr>
+        <td>Outgoing Message Sender</td>
+        <td>Implementa el enlace de comunicación con sistemas externos para enviar los mensajes generados por el sistema. Se encarga de transmitir los mensajes a través del canal de comunicación apropiado para cada mensaje.</td>
+      </tr>
+      <tr>
+        <td>HA Proxy</td>
+        <td>Se encarga de actuar como un proxy y balanceador de carga, distribuyendo las conexiones entrantes entre los brokers MQTT para asegurar un manejo eficiente y balanceado del tráfico, mejorando la disponibilidad y la escalabilidad del sistema.</td>
+      </tr>
+      <tr>
+        <td>MQTT Broker</td>
+        <td>Facilita la comunicación basada en el protocolo MQTT entre el Gateway de Mensajería y los clientes o dispositivos. Se encarga de recibir, almacenar y enviar mensajes en tiempo real.</td>
+      </tr>
+      <tr>
+        <td>API Gateway</td>
+        <td>Gestiona la autenticación, autorización y enrutamiento de solicitudes, proporcionando un punto único de acceso para los servicios del core. Facilita la integración de los distintos servicios y controla el acceso a ellos de manera centralizada.</td>
+      </tr>
+      <tr>
+        <td>Service register</td>
+        <td>Proporciona un registro dinámico de los servicios disponibles en la arquitectura, facilitando la localización de servicios para su comunicación y descubrimiento dentro del sistema.</td>
+      </tr>
+      <tr>
+        <td>Special Integration Service</td>
+        <td>Actúa como el enlace en la comunicación con el Gateway de Mensajería. Se encarga de recibir los mensajes entrantes del Gateway de Mensajería y los mensajes salientes del Core, y enrutarlos debidamente para su procesamiento. Prioriza el procesamiento, transmitiendo con prioridad aquellos donde el usuario implicado se encuentra en línea. </td>
+      </tr>
+      <tr>
+        <td>Sessions Service</td>
+        <td>Centraliza y gestiona la información de los usuarios en línea, desacoplando el manejo de canales WebSocket. Este servicio coordina los canales que se distribuyen entre las instancias del WebSocket Manager, permitiendo una correcta comunicación en tiempo real.</td>
+      </tr>
+      <tr>
+        <td>Websocket Manager</td>
+        <td>Gestiona los canales de comunicación WebSocket del sistema. Se encarga de abrir, cerrar y mantener las conexiones WebSocket con los clientes. Además, recibe y envía mensajes a través de estos canales, facilitando la comunicación en tiempo real entre el servidor y los clientes. Implementa la lógica necesaria para gestionar múltiples conexiones WebSocket de manera eficiente y confiable.</td>
+      </tr>
+      <tr>
+        <td>Message Service</td>
+        <td>Se encarga de manejar la lógica de negocio relacionada con los mensajes en el sistema. Recibe mensajes entrantes y salientes, y los procesa según las reglas y lógica del negocio.</td>
+      </tr>
+      <tr>
+        <td>Persistance Service</td>
+        <td>Se encarga de gestionar la persistencia de datos en el sistema. Recibe los mensajes procesados del Message Service y se encarga de su almacenamiento permanente en la base de datos.</td>
+      </tr>
+      <tr>
+        <td>Chat Service</td>
+        <td>Gestiona la lógica de las conversaciones, como la recuperación del historial de mensajes cuando un usuario abre una conversación.</td>
+      </tr>
+      <tr>
+        <td>Notification Service</td>
+        <td>Se encarga de gestionar el envío de notificaciones a los usuarios del sistema mediante canales de notificación alternativos, cuando los mismos no se encuentran conectados.</td>
+      </tr>
+      <tr>
+        <td>Message Command Repository</td>
+        <td>Se encarga de gestionar las operaciones de escritura en la base de datos relacionadas con los mensajes, permitiendo la creación, actualización y eliminación de mensajes.</td>
+      </tr>
+      <tr>
+        <td>Message Query Repository</td>
+        <td>Es responsable de gestionar las consultas de mensajes almacenados en la base de datos. Esto incluye la recuperación del historial de conversaciones, como parte de operaciones más generales de lectura, y la implementación de la paginación para garantizar un rendimiento eficiente al cargar grandes volúmenes de mensajes.</td>
+      </tr>
+      <tr>
+        <td>Notification Repository</td>
+        <td>Se encarga de gestionar el almacenamiento y recuperación de notificaciones en el sistema. Proporciona métodos para crear, leer, actualizar y eliminar notificaciones en la base de datos.</td>
+      </tr>
+      <tr>
+        <td>User Repository</td>
+        <td>Se encarga de gestionar el almacenamiento y recuperación de información de usuarios en el sistema. Proporciona métodos para crear, leer, actualizar y eliminar datos de usuario en la base de datos. </td>
+      </tr>
+    </table>
+</dd></dl>
+
 <p align="right">(<a href="#top">Volver al inicio</a>)</p>
