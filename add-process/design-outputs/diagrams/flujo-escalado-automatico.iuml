@@ -1,0 +1,100 @@
+@startuml test
+
+title Flujo de Escalado Híbrido en Kubernetes con Prioridad en Nodos Locales
+
+start
+:<b>HPA/KEDA</b> detecta que es necesario escalar
+(no se están cumpliendo las métricas establecidas);
+note right
+  - <b>KEDA</b> activa el escalado ante aumentos en la carga 
+  (más mensajes en las colas de mensajes de RabbitMQ)
+  
+  - <b>HPA</b> activa el escalado cuando se alcancen umbrales
+  de recursos (CPU, memoria) 
+end note
+
+:<b>HPA/KEDA</b> actualiza el número de réplicas
+en el <i>ReplicaSet</i>;
+note right
+  <b>HPA/KEDA</b> define internamente el número de réplicas  
+  necesarias para volver a cumplir con las métricas 
+  establecidas
+end note
+
+:<b>Kubernetes Controller Manager</b> detecta el cambio
+a través del <i>ReplicaSet Controller</i>, verifica el número
+actual de réplicas en ejecución y ajusta la cantidad 
+de pods creando o eliminando instancias hasta cumplir 
+con la especificación deseada;
+
+:<b>Kubernetes Scheduler</b> detecta los pods sin nodo asignado
+y evalúa opciones de nodos disponibles;
+
+if (¿Hay nodos <i>feasibles</i> (con recursos suficientes)?) then (No)
+  :Reporta limitación de recursos y falla el escalado;
+  end
+else (Sí)
+  if ("Entre estos nodos, ¿existen nodos \nlocales con <i>nodeAffinity</i> que cumplan \ncon la preferencia del pod?") then (No)
+    note right
+      Todos los pods deben definir una
+      preferencia por los nodos locales
+      a través de <i>nodeAffinity</i>. 
+      Esto garantiza que, tanto en el 
+      proceso de replicar servicios como 
+      al reducir instancias, se priorice la 
+      infraestructura local en lugar de la 
+      infraestructura en la nube
+    end note
+
+    :Asigna el pod al primer nodo 
+    disponible con recursos suficientes
+    (por descarte, el nodo virtual -cloud-);
+    note left
+      El nodo virtual no tiene restricciones
+      de recursos visibles para el scheduler
+      de Kubernetes; siempre considera a este
+      nodo virtual con recursos suficientes  
+    end note
+
+    :<b>Virtual Kubelet</b> traduce la solicitud del pod 
+    en una acción/solicitud que se ejecuta en la 
+    infraestructura de nube. Esto incluye la creación
+    de instancias de máquinas virtuales o contenedores
+    en el entorno de nube, dependiendo de la 
+    infraestructura subyacente utilizada;
+    note left
+      <b>Virtual Kubelet</b> debe implementarse de 
+      acuerdo con la infraestructura subyacente, ya
+      sea una plataforma como servicio (PaaS), un 
+      proveedor de nube específico o una combinación
+      de múltiples servicios.
+    end note
+
+    if (¿Hay recursos suficientes?) then (No)
+      :<b>Virtual Kubelet</b> notifica al 
+      <b>Kubernetes Scheduler</b> para que tome 
+      medidas adicionales, como el reintento de 
+      asignación o el escalado de recursos en el 
+      clúster local;
+    else (Sí)
+      :<b>Virtual Kubelet</b> ejecuta el pod en la 
+      infraestructura de nube y se asegura 
+      de que el pod pueda comunicarse con 
+      otros servicios en el clúster de 
+      Kubernetes;
+    endif
+    stop
+  else (Sí)
+    :Asigna el pod al nodo local
+    de mayor puntuación;
+
+    :<b>Kubernetes Controller Manager</b> 
+    verifica el estado del pod asignado. Si
+    no está funcionando correctamente, 
+    reinicia el pod o toma otra acción hasta 
+    solucionar el problema;
+    stop
+  endif
+endif
+
+@enduml
