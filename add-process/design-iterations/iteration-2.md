@@ -82,3 +82,19 @@ En esta segunda iteración, se llevará a cabo una revisión de los componentes 
 </table>
 
 <p align="right">(<a href="#top">Volver al inicio</a>)</p>
+
+### Design outputs
+
+<ul>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-007.md">ADR 007: Selección de MQTT como protocolo de comunicación entre el Gateway de mensajería y el Core</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-008.md">ADR 008: Arquitectura de microservicios para el Gateway de mensajería</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-009.md">ADR 009: Paralelización de tareas en los servicios</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-010.md">ADR 010: Encapsulamiento de los servicios en contenedores</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-011.md">ADR 011: Orquestación de contenedores y escalado dinámico</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-012.md">ADR 012: Implementación de estrategias de escalado automático y balanceo de carga</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-013.md">ADR 013: Introducción de Service Discovery</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-014.md">ADR 014: Centralización del Session Management</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-015.md">ADR 015: Separación de operaciones de lectura y escritura en la base de datos (CQRS) en el Servicio de Mensajería</a></li>
+</ul>
+
+<p align="right">(<a href="#top">Volver al inicio</a>)</p>
