@@ -185,4 +185,9 @@ En esta segunda iteración, se llevará a cabo una revisión de los componentes 
     </table>
 </dd></dl>
 
+<h4>- <a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/diagrams/flujo-escalado-automatico.iuml">Flujo escalado automático (estrategias)</a></h4>
+<dl><dd>
+
+![flujo-escalado-automatico](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ramaaorella/final_disenio/main/add-process/design-outputs/diagrams/flujo-escalado-automatico.iuml)
+
 <p align="right">(<a href="#top">Volver al inicio</a>)</p>
