@@ -95,7 +95,7 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
       </tr>
       <tr>
         <td>Incoming Message Receiver</td>
-        <td>Recepción de mensajes entrantes desde los diferentes canales de comunicación. Procesamiento inicial para eliminar información innecesaria. Envío de mensajes procesados para la cola de mensajes entrantes.</td>
+        <td>Recepción de mensajes entrantes desde los diferentes canales de comunicación. Envío de mensajes procesados para la cola de mensajes entrantes.</td>
       </tr>
       <tr>
         <td>Incoming Message Sender</td>
@@ -110,8 +110,12 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
         <td>Implementa el enlace de comunicación con sistemas externos para enviar los mensajes generados por el sistema. Se encarga de transmitir los mensajes a través del canal de comunicación apropiado para cada mensaje.</td>
       </tr>
       <tr>
+        <td>Gateway</td>
+        <td>Administra la autenticación, autorización y enrutamiento de solicitudes, proporcionando un punto único de entrada al sistema.</td>
+      </tr>
+      <tr>
         <td>Special Integration Service</td>
-        <td>Actúa como el enlace en la comunicación con el Gateway de Mensajería. Se encarga de recibir los mensajes entrantes del Gateway de Mensajería y los mensajes salientes del Core, y enrutarlos debidamente para su procesamiento. Prioriza el procesamiento, entre los mensajes entrantes, transmitiendo con prioridad aquellos donde el usuario implicado se encuentra en línea. </td>
+        <td>Actúa como el enlace en la comunicación con el Gateway de Mensajería. Se encarga de recibir los mensajes entrantes del Gateway de Mensajería y los mensajes salientes del Core, y enrutarlos debidamente para su procesamiento. Prioriza el procesamiento, transmitiendo con prioridad aquellos donde el usuario implicado se encuentra en línea. </td>
       </tr>
       <tr>
         <td>Websocket Manager</td>
