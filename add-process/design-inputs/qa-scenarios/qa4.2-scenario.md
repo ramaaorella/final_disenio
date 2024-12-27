@@ -1,4 +1,4 @@
-## Escenario de calidad QA-4.2: Procesamiento de mensajes entrantes con alto throughtput
+## Escenario de calidad QA-4.2: Procesamiento de mensajes entrantes con alto throughput
 
 _El throughput del sistema a la hora de procesar mensajes, ya sea en los flujos entrantes como salientes, no debe incidir gravemente en la performance._
 
