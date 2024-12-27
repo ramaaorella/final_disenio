@@ -34,13 +34,17 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
   </thead>
   <tbody>
     <tr>
-      <td rowspan="3">UC-2, UC-3</td>
+      <td rowspan="4">UC-2, UC-3, QA-4.1</td>
       <td>Comunicación sincrónica o asincrónica entre componentes (Gateway de mensajería-Core y Core-Frontend)</td>
       <td>Considerando la naturaleza del flujo de mensajes entre el Gateway de mensajería, el Core y el Frontend, es crucial decidir el tipo de comunicación que mejor se adapte a las necesidades del sistema. La comunicación sincrónica garantiza una respuesta inmediata antes de que el remitente pueda continuar con su ejecución, lo que puede ser beneficioso para sincronización y confirmaciones de mensajes, pero puede aumentar la complejidad y el riesgo de bloqueo. En contraste, la comunicación asincrónica permite un procesamiento más fluido y mejora la escalabilidad y la tolerancia a fallos, aunque puede introducir latencia y requerir sincronización adicional.</td>
     </tr>
     <tr>
       <td>Comunicación sincrónica o asincrónica entre servicios</td>
       <td>Al igual que entre componentes, la comunicación entre servicios puede tratarse de una comunicación sincrónica o asincrónica. A diferencia del caso anterior, debe considerarse la dependencia potencial entre servicios al decidir el tipo de comunicación, ya que se puede requerir sincronicidad para garantizar la integridad y coherencia del sistema. Es importante tener en cuenta que cada enfoque tiene sus propias ventajas y desventajas, y por ello, es necesario evaluar el tipo de comunicación en función de las necesidades específicas de cada interacción entre servicios.</td>
+    </tr>
+    <tr>
+      <td>Orquestación descentralizada entre servicios</td>
+      <td>La orquestación descentralizada permite que los servicios coordinen sus interacciones de forma independiente, sin depender de un sistema central para gestionar su ejecución. Este enfoque no sigue el patrón tradicional de arquitectura orientada a servicios (SOA), en el que se suele centralizar la gestión de los servicios a través de un bus de servicios o un orquestador centralizado. En cambio, con la orquestación descentralizada, los servicios son más autónomos y pueden operar de manera independiente, lo que mejora la escalabilidad y resiliencia del sistema. Sin embargo, esta estrategia introduce desafíos, como la gestión de la consistencia de los datos y la coordinación entre servicios distribuidos. Es fundamental evaluar si la complejidad adicional de la orquestación descentralizada es compatible con los objetivos del sistema y si se dispone de mecanismos adecuados para manejar la consistencia eventual y las posibles fallas de comunicación.</td>
     </tr>
     <tr>
       <td>Gestión de la persistencia de mensajes como parte del procesamiento</td>
@@ -62,7 +66,7 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
     </tr>
     <tr>
       <td>Reducción de la sobrecarga mediante co-locate</td>
-      <td>La co-locación de recursos es una estrategia que puede reducir significativamente la latencia y mejorar la eficiencia del sistema en sistemas distribuidos al minimizar la sobrecarga de red y los tiempos de comunicación entre componentes. Al alojar componentes relacionados en la misma infraestructura física o virtual, se reduce la latencia inherente a las comunicaciones entre nodos, lo que puede resultar en una mejora notable en la capacidad de respuesta del sistema y en la experiencia del usuario. Sin embargo, esta estrategia puede aumentar la complejidad de la gestión de recursos y la dependencia entre componentes, lo que podría introducir riesgos adicionales en la operación del sistema y dificultar su escalabilidad a largo plazo.</td>
+      <td>La co-locación de recursos es una estrategia que puede reducir significativamente la latencia y mejorar la eficiencia del sistema en sistemas distribuidos al minimizar la sobrecarga de red y los tiempos de comunicación entre componentes. Si bien esta práctica está más asociada a entornos on-premise, también se aplica ampliamente en despliegues en la nube, aprovechando la selección de zonas o regiones específicas para alojar los servicios de manera más cercana. Al alojar componentes relacionados en proximidad física o virtual, se reduce la latencia inherente a las comunicaciones entre nodos, lo que puede resultar en una mejora notable en la capacidad de respuesta del sistema y en la experiencia del usuario. Sin embargo, esta estrategia puede aumentar la complejidad de la gestión de recursos y la dependencia entre componentes, lo que podría introducir riesgos adicionales en la operación del sistema y restricciones que dificultarían la escalabilidad horizontal a largo plazo.</td>
     </tr>
   </tbody>
 </table>
@@ -73,10 +77,11 @@ En esta primera iteración, se refinarán dos componentes críticos del sistema:
 
 <ul>
   <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-001.md">ADR 001: Comunicación asincrónica entre componentes y servicios</a></li>
-  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-002.md">ADR 002: Desacoplamiento de la persistencia del procesamiento de mensajes</a></li>
-  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-003.md">ADR 003: Implementación de notificaciones en tiempo real y diferidas</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-002.md">ADR 002: Estrategia de microservicios descentralizados para los flujos de mensajes en una arquitectura SOA</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-003.md">ADR 003: Desacoplamiento de la persistencia del procesamiento de mensajes</a></li>
   <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-004.md">ADR 004: Priorización de mensajes de usuarios en línea en el procesamiento</a></li>
-  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-005.md">ADR 005: Optimización de la latencia de red y reducción de sobrecarga mediante protocolos livianos, reducción de mensajes y co-locación de recursos</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-005.md">ADR 005: Implementación de notificaciones en tiempo real y diferidas (push)</a></li>
+  <li><a href="https://github.com/ramaaorella/final_disenio/blob/main/add-process/design-outputs/adrs/adr-006.md">ADR 006: Optimización de la latencia de red y reducción de sobrecarga mediante protocolos livianos, reducción de mensajes y co-locación de recursos</a></li>
 </ul>
 
 <h4>- <a href="https://github.com/ramaaorella/final_disenio/blob/main/images/architecture/iteration-1.png">Diagrama C&C</a></h4>
